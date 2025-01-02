@@ -10,13 +10,13 @@ import { errorMiddleware } from "./src/middlewares/errorMiddleware.js";
 import cors from "cors";
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = 3000;
+connectDB();
 
 app.use(express.json());
 app.use(cors());
 
-// Connect to the database
-connectDB();
+
 
 // Routes
 app.use("/user/books", booksRoutes);
@@ -24,7 +24,7 @@ app.use("/auth", authRoutes);
 app.use("/transactions", transactionRoutes);
 app.use("/user", userRoutes);
 
-// Error middleware
+
 app.use(errorMiddleware);
 
 app.listen(port, () => {

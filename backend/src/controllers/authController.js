@@ -3,12 +3,12 @@ import jwt from "jsonwebtoken";
 import Users from "../models/userModel.js";
 
 const saltRounds = 10;
-const JWT_SECRET = process.env.JWT_SECRET;
+// const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_SECRET = "gibbsrfakjfks"
 
 export const signup = async (req, res, next) => {
   try {
     const { name, email, password, role } = req.body;
-
     // Check if user already exists
     const existingUser = await Users.findOne({ email });
     if (existingUser) {
@@ -26,7 +26,7 @@ export const signup = async (req, res, next) => {
 
 export const login = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, role } = req.body;
 
     const user = await Users.findOne({ email });
     if (!user) {
@@ -36,6 +36,14 @@ export const login = async (req, res, next) => {
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return res.status(400).json({ status: "error", message: "Invalid email or password." });
+    }
+
+    if (!user.approved) {
+      return res.status(400).json({ status: "error", message: "You haven't been approved yet. Please wait." });
+    }
+
+    if(!(user.role===role)){
+      return res.status(400).json({ status: "error", message: "Your role doesn't match." });
     }
 
     const token = jwt.sign(

@@ -1,5 +1,5 @@
 import express from "express";
-import { getAllBooks, addBook } from "../controllers/booksController.js";
+import { getAllBooks, addBook } from "../controllers/bookController.js";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
 import { roleMiddleware } from "../middlewares/roleMiddleware.js";
 
@@ -20,7 +20,7 @@ router.post(
   roleMiddleware("Admin"), // Only Admin can add books
   async (req, res, next) => {
     try {
-      await addBook(req.body, res, next);
+      await addBook(req, res, next);
     } catch (error) {
       next(error);
     }

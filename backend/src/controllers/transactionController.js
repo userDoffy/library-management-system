@@ -1,5 +1,5 @@
-import Transactions from "../models/transactionModel.js";
-import Books from "../models/bookModel.js";
+import Transactions from "../models/transactionsModel.js";
+import Books from "../models/booksModel.js";
 
 export const borrowBook = async (req, res, next) => {
   try {
